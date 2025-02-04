@@ -9,8 +9,7 @@ namespace GroupProject_Autorization
 {
     internal class Program
     {
-        public static bool _passing = false; // Переменаая для сообщения серверу о допуске пользователя в чат
-        public static bool _reg = false; // Переменная для сообщения серверу о необходимости регистрации пользователя
+        public static bool _passing = false; // Переменная для сообщения серверу о допуске пользователя в чат        
         static void Main(string[] args)
         {
             if (!FSWork.IsDBExists("Users.db")) // Проверка с создание БД с пользователями
@@ -30,14 +29,14 @@ namespace GroupProject_Autorization
             }
             else // Если пользователя нет в БД
             {
+                // Тут надо отправить пользователю запрос на регистрацию
                 Console.WriteLine($"Пользователя {nickname} ещё нет в базе данных!\nЗарегистрироваться?\n" +
                     $"Нажмите '1' для выхода или любую другую клавишу для регистрации.");
                 Console_Text("Ваш выбор -> ", ConsoleColor.Yellow);                
                 char choice = Console.ReadKey().KeyChar; // В переменную записываем выбор пользователя
                 Console.WriteLine();
                 if (choice != '1')
-                {
-                    _reg = true; // Надо отправить запрос на клиенту о необходимости регистрации пользователя
+                {                    
                     Console_Text("Введите пароль для регистрации -> ", ConsoleColor.Yellow);
                     string password = Console.ReadLine(); // В эту переменную надо записать пароль от регистрируещегося пользователя
                     DBWork.AddUser($"INSERT INTO Users (nickname, password) VALUES ('{nickname}', '{password.GetHashCode()}');");
@@ -50,6 +49,7 @@ namespace GroupProject_Autorization
         static bool Autorization(string nickname) // Процедура авторизации пользователя
         {
             Console.WriteLine($"Пользователь {nickname} есть в базе данных!");
+            // Тут надо отправить запрос пользователю на ввод пароля
             Console_Text("Введите пароль -> ", ConsoleColor.Yellow);
             string password = Console.ReadLine(); // В эту переменную надо записать пароль от подключающегося пользователя
             if (DBWork.CheckUser($"SELECT id FROM Users WHERE password = '{password.GetHashCode()}' AND nickname = '{nickname}';"))
