@@ -9,6 +9,8 @@ namespace GroupProject_Autorization
 {
     internal class Program
     {
+        // Подключить нагет-пакет System.Data.SQLite (версии 1.0.119)!!!
+
         public static bool _passing = false; // Переменная для сообщения серверу о допуске пользователя в чат        
         static void Main(string[] args)
         {
